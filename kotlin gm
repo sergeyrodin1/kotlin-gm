@@ -1,0 +1,76 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.time.Duration;
+
+public class RegistrationFormTest {
+
+    public static void main(String[] args) {
+        // Установка пути к ChromeDriver
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+
+        // Инициализация WebDriver
+        WebDriver driver = new ChromeDriver();
+
+        // Установка времени ожидания
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+        // Открытие сайта
+        driver.get("https://www.greencity.cx.ua/#/greenCity");
+
+        // Позитивный сценарий
+        testValidEmailAndPassword(driver);
+
+        // Негативный сценарий
+        testInvalidEmailAndPassword(driver);
+
+        // Закрытие браузера
+        driver.quit();
+    }
+
+    private static void testValidEmailAndPassword(WebDriver driver) {
+        // Находим поля ввода email и password
+        WebElement emailInput = driver.findElement(By.id("email")); // Замените ID на реальный
+        WebElement passwordInput = driver.findElement(By.id("password")); // Замените ID на реальный
+
+        // Вводим валидные данные
+        emailInput.sendKeys("validemail@example.com");
+        passwordInput.sendKeys("Valid@123");
+
+        // Находим и кликаем кнопку регистрации
+        WebElement registerButton = driver.findElement(By.id("register")); // Замените ID на реальный
+        registerButton.click();
+
+        // Проверяем наличие успешного сообщения
+        WebElement successMessage = driver.findElement(By.id("successMessage")); // Замените ID на реальный
+        if (successMessage.isDisplayed()) {
+            System.out.println("Позитивный сценарий пройден успешно!");
+        } else {
+            System.out.println("Ошибка: Позитивный сценарий не выполнен.");
+        }
+    }
+
+    private static void testInvalidEmailAndPassword(WebDriver driver) {
+        // Находим поля ввода email и password
+        WebElement emailInput = driver.findElement(By.id("email")); // Замените ID на реальный
+        WebElement passwordInput = driver.findElement(By.id("password")); // Замените ID на реальный
+
+        // Вводим невалидные данные
+        emailInput.sendKeys("invalidemail");
+        passwordInput.sendKeys("12345");
+
+        // Находим и кликаем кнопку регистрации
+        WebElement registerButton = driver.findElement(By.id("register")); // Замените ID на реальный
+        registerButton.click();
+
+        // Проверяем сообщение об ошибке
+        WebElement errorMessage = driver.findElement(By.id("errorMessage")); // Замените ID на реальный
+        if (errorMessage.isDisplayed()) {
+            System.out.println("Негативный сценарий пройден успешно!");
+        } else {
+            System.out.println("Ошибка: Негативный сценарий не выполнен.");
+        }
+    }
+}
